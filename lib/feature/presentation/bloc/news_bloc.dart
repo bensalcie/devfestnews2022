@@ -1,14 +1,16 @@
-import 'package:bloc/bloc.dart';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'news_event.dart';
 part 'news_state.dart';
 
 String BASE_URL = "https://newsapi.org/v2";
 
-class NewsBloc extends Bloc<NewsEvent, NewsState> {
+class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
   NewsBloc() : super(const NewsState()) {
     on<GetNews>(_onGetNews);
   }
@@ -45,5 +47,23 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   void onChange(Change<NewsState> change) {
     super.onChange(change);
     print('$change');
+  }
+
+  @override
+  NewsState? fromJson(Map<String, dynamic> data) {
+    return NewsState.fromJson(
+      {
+        'articles': state.articles,
+        'status': state.status,
+      },
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(NewsState state) {
+    if (state.status == NewsStatus.loaded) {
+      return toJson(state);
+    }
+    return null;
   }
 }
