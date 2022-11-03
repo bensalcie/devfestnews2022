@@ -17,7 +17,10 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
 
   void _onGetNews(GetNews event, Emitter<NewsState> emit) async {
     // Notify UI data is loading.
-    emit(state.copyWith(status: NewsStatus.loading));
+
+    if (state.status == NewsStatus.initial) {
+      emit(state.copyWith(status: NewsStatus.loading));
+    }
 
     try {
       // Get articles from the API.
@@ -26,6 +29,7 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
       // Notify UI loading is completed.
       emit(state.copyWith(articles: articles, status: NewsStatus.loaded));
     } catch (e) {
+      print(e);
       // An error occurred.
       // Notify UI something went wrong.
       emit(state.copyWith(status: NewsStatus.error));
@@ -51,18 +55,13 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
 
   @override
   NewsState? fromJson(Map<String, dynamic> data) {
-    return NewsState.fromJson(
-      {
-        'articles': state.articles,
-        'status': state.status,
-      },
-    );
+    return NewsState.fromJson(json.encode(data));
   }
 
   @override
   Map<String, dynamic>? toJson(NewsState state) {
     if (state.status == NewsStatus.loaded) {
-      return toJson(state);
+      return state.toMap();
     }
     return null;
   }

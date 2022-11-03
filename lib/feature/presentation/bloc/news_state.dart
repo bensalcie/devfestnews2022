@@ -19,16 +19,25 @@ class NewsState extends Equatable {
   @override
   List<Object> get props => [articles, status];
 
-  @override
-  factory NewsState.fromJson(Map<String, dynamic> json) => NewsState(
-        articles: json['articles'],
-        status: json['status'],
-      );
-
-  @override
-  Map<String, dynamic> toJson(NewsState state) {
-    return {'articles': state.articles};
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'articles': articles,
+      'status': status.index,
+    };
   }
+
+  factory NewsState.fromMap(Map<String, dynamic> map) {
+    int val = map['status'];
+    return NewsState(
+      articles: List.from((map['articles'] as List)),
+      status: NewsStatus.values[val],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory NewsState.fromJson(String source) =>
+      NewsState.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 enum NewsStatus { initial, loading, loaded, error }
