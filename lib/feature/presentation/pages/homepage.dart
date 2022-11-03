@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,65 +35,15 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 );
               case NewsStatus.error:
-                return const Center(
-                  child: Text('Something went wrong'),
-                );
-              case NewsStatus.loaded:
-                return ListView.separated(
-                  itemCount: state.articles.length,
-                  separatorBuilder: (context, index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: Divider(),
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    // Grab new items
-                    var article = state.articles[index];
-                    var title = article['title'];
-                    var description = article['description'];
-                    var image = article['urlToImage'];
+                if (state.articles.isEmpty) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+                return NewsList(articles: state.articles);
 
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: image != null
-                                  ? Image.network(image)
-                                  : const Icon(
-                                      Icons.gavel,
-                                      size: 30,
-                                    ),
-                            )),
-                        Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  description ?? '',
-                                  maxLines: 3,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+              case NewsStatus.loaded:
+                return NewsList(articles: state.articles);
               default:
                 return const Center(
                   child: CircularProgressIndicator.adaptive(),
@@ -101,6 +52,72 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+    );
+  }
+}
+
+class NewsList extends StatelessWidget {
+  final List articles;
+  const NewsList({
+    required this.articles,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: articles.length,
+      separatorBuilder: (context, index) => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 4.0),
+        child: Divider(),
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        // Grab new items
+        var article = articles[index];
+        var title = article['title'];
+        var description = article['description'];
+        var image = article['urlToImage'];
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: image != null
+                      ? CachedNetworkImage(imageUrl: image)
+                      : const Icon(
+                          Icons.gavel,
+                          size: 30,
+                        ),
+                )),
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Column(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      description ?? '',
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
