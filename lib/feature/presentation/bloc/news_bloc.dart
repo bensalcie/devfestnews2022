@@ -13,16 +13,10 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     on<GetNews>(_onGetNews);
   }
 
-  void _onGetNews(GetNews event, Emitter<NewsState> emit) async {
-    //emit();
+  void _onGetNews(GetNews event, Emitter<NewsState> emit) {
+    // TODO: Update state.
 
-    List articles = await _getNews();
-
-    if (articles.isNotEmpty) {
-      emit(NewsLoaded(articles));
-    } else {
-      emit(const NewsFail('Something went wrong.'));
-    }
+    throw UnimplementedError();
   }
 
   Future<List> _getNews() async {
