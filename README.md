@@ -1,4 +1,4 @@
-# devfestnews
+# Devfest News 2022
 
 A project presented during the 2022 DevFest Nairobi (USIU)
 
