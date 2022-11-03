@@ -40,4 +40,6 @@ class NewsState extends Equatable {
       NewsState.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+
+
 enum NewsStatus { initial, loading, loaded, error }
