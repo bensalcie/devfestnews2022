@@ -6,11 +6,5 @@ abstract class NewsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-class GetNews extends NewsEvent {
 
-
-   const GetNews() : super();
-
-  @override
-  List<Object> get props => [];
-}
+class GetNews extends NewsEvent {}

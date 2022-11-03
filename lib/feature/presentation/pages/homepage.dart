@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // Wrap your page with Bloc provider to trigger news fetch using GetNews event.
     return BlocProvider(
-      create: (context) => NewsBloc()..add(const GetNews()),
+      create: (context) => NewsBloc()..add(GetNews()),
       child: Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -25,48 +25,53 @@ class _HomePageState extends State<HomePage> {
           title: Text(widget.title),
         ),
 
-        // Add a listener that will inform us when data is available or error occured.
-
+        // Add a builder to rebuild UI on state changes.
         body: BlocBuilder<NewsBloc, NewsState>(
           builder: (context, state) {
-            if (state is NewsLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is NewsLoaded) {
-              return ListView.builder(
-                itemCount: state.response.length,
-                itemBuilder: (BuildContext context, int index) {
-                  // Grab new items
-                  var article = state.response[index];
-                  var title = article['title'];
-                  var description = article['description'];
-                  var image = article['urlToImage'];
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: image != null
-                                ? Image.network(image)
-                                : const Icon(
-                                    Icons.gavel,
-                                    size: 30,
-                                  ),
-                          )),
-                      Expanded(
+            switch (state.status) {
+              case NewsStatus.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case NewsStatus.error:
+                return const Center(
+                  child: Text('Something went wrong'),
+                );
+              case NewsStatus.loaded:
+                return ListView.separated(
+                  itemCount: state.articles.length,
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    child: Divider(),
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    // Grab new items
+                    var article = state.articles[index];
+                    var title = article['title'];
+                    var description = article['description'];
+                    var image = article['urlToImage'];
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: image != null
+                                  ? Image.network(image)
+                                  : const Icon(
+                                      Icons.gavel,
+                                      size: 30,
+                                    ),
+                            )),
+                        Expanded(
                           flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Column(
                               children: [
-                                const SizedBox(
-                                  height: 5,
-                                ),
                                 Text(
                                   title,
                                   style: const TextStyle(
@@ -76,25 +81,25 @@ class _HomePageState extends State<HomePage> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Text(description ?? ''),
+                                Text(
+                                  description ?? '',
+                                  maxLines: 3,
+                                ),
                               ],
                             ),
-                          )),
-                    ],
-                  );
-                },
-              );
-            }
-            if (state is NewsFail) {
-              return Center(
-                child: Text(state.error),
-              );
-            } else {
-              return const SizedBox.shrink();
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              default:
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
             }
           },
         ),
-        // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
