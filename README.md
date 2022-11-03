@@ -1,16 +1,23 @@
-# devfestnews
+# Devfest News 2022 (Starter Project)
 
-A new Flutter project.
+A project presented during the 2022 DevFest Nairobi (USIU)
 
-## Getting Started
+## Flutter managing state using Hydrated Bloc
 
-This project is a starting point for a Flutter application.
+Devfest News 2022 is a simple news app that will use Hydrated Bloc to  persist state to your existing Bloc App. Hydrated bloc comes in handy to maintain the state of the app and caching date from a network without the hustle to create local storage and relationship schemas.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Throught this sesseion at #devFest2022 we will cover the following.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Part One : Go through the starter project ](https://github.com/bensalcie/devfestnews2022)
+- [Part two: Add all the required dependancies for Hydrated bloc](https://pub.dev/packages/hydrated_bloc)
+
+#### Implement the final project using the news API to get list of current news from the technology category.
+
+[Final Project](https://github.com/bensalcie/devfestnews2022/tree/final),The final project should look like one below.
+
+When you run it, switch off your newtwork connectivity and rerun the app again, it should have lost previous state of the App.
+Mark that the app only updates when there is a change in the data coming from the API.
+
+![Screenshot_1667503302](https://user-images.githubusercontent.com/17502827/199817362-ee39aa7f-1256-4725-8621-e3702ab5b087.png)
+
