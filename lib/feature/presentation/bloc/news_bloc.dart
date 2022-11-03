@@ -29,7 +29,6 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
       // Notify UI loading is completed.
       emit(state.copyWith(articles: articles, status: NewsStatus.loaded));
     } catch (e) {
-      print(e);
       // An error occurred.
       // Notify UI something went wrong.
       emit(state.copyWith(status: NewsStatus.error));
@@ -50,7 +49,7 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
   @override
   void onChange(Change<NewsState> change) {
     super.onChange(change);
-    print('$change');
+    debugPrint('$change');
   }
 
   @override
