@@ -16,3 +16,6 @@ Implement the final project using the news API to get list of current news from 
 [Final Project](https://github.com/bensalcie/devfestnews2022/tree/final),The final project should look like one below.
 When you run it, switch off your newtwork connectivity and rerun the app again, it should have all the infomation previously fetched to the app.
 Mark that the app only updates when there is a change in the data coming from the API.
+
+![Screenshot_1667503302](https://user-images.githubusercontent.com/17502827/199817362-ee39aa7f-1256-4725-8621-e3702ab5b087.png)
+
