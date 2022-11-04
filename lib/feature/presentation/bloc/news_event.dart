@@ -7,4 +7,5 @@ abstract class NewsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Call this event to trigger an API call to the news api from the UI.
 class GetNews extends NewsEvent {}

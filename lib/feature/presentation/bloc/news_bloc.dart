@@ -15,10 +15,11 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
     on<GetNews>(_onGetNews);
   }
 
+  /// [GetNews] event handler.
   void _onGetNews(GetNews event, Emitter<NewsState> emit) async {
-    // Notify UI data is loading.
-
     if (state.status == NewsStatus.initial) {
+      // Notify UI data is loading shown only when coming from the initial NewsState
+      // state. i.e no data is initial loaded and probably first time app launch.
       emit(state.copyWith(status: NewsStatus.loading));
     }
 
@@ -35,10 +36,14 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
     }
   }
 
+  /// Makes the api call to the newsapi.org endpoint for topheadlines.
+  ///
+  /// By default this get technology news from the US.
   Future<List> _getNews() async {
     try {
       var response = await Dio().get(
-          '$BASE_URL/top-headlines?country=us&category=technology&apiKey=8032b416514643b9a80f4779961cdc71');
+        '$BASE_URL/top-headlines?country=us&category=technology&apiKey=8032b416514643b9a80f4779961cdc71',
+      );
 
       return response.data['articles'];
     } catch (e) {
@@ -47,13 +52,7 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
   }
 
   @override
-  void onChange(Change<NewsState> change) {
-    super.onChange(change);
-    debugPrint('$change');
-  }
-
-  @override
-  NewsState? fromJson(Map<String, dynamic> data) {
+  NewsState fromJson(Map<String, dynamic> data) {
     return NewsState.fromJson(json.encode(data));
   }
 
@@ -63,5 +62,11 @@ class NewsBloc extends HydratedBloc<NewsEvent, NewsState> {
       return state.toMap();
     }
     return null;
+  }
+
+  @override
+  void onChange(Change<NewsState> change) {
+    super.onChange(change);
+    debugPrint('$change');
   }
 }

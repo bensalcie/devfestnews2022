@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             switch (state.status) {
               case NewsStatus.loading:
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 );
               case NewsStatus.error:
                 if (state.articles.isEmpty) {
@@ -83,16 +83,17 @@ class NewsList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: image != null
-                      ? CachedNetworkImage(imageUrl: image)
-                      : const Icon(
-                          Icons.gavel,
-                          size: 30,
-                        ),
-                )),
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: image != null
+                    ? CachedNetworkImage(imageUrl: image)
+                    : const Icon(
+                        Icons.image,
+                        size: 30,
+                      ),
+              ),
+            ),
             Expanded(
               flex: 3,
               child: Padding(
@@ -102,7 +103,9 @@ class NewsList extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
