@@ -43,6 +43,11 @@ class _HomePageState extends State<HomePage> {
                 return NewsList(articles: state.articles);
 
               case NewsStatus.loaded:
+                if (state.articles.isEmpty) {
+                  return const Center(
+                    child: Text('Hmm, no news! That\'s new. 😃'),
+                  );
+                }
                 return NewsList(articles: state.articles);
               default:
                 return const Center(
