@@ -29,15 +29,27 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  # Bloc package for state management.
   bloc: ^8.1.0
+  # To cache images loaded into the app.
   cached_network_image: ^3.2.2
   cupertino_icons: ^1.0.2
+
+  # To make network calls better than http 😉
   dio: ^4.0.6
+
+  # To compare dart class objects equality.
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+
+  # Bloc-State management.
   flutter_bloc: ^8.1.1
+
+  # Persist Bloc State.
   hydrated_bloc: ^9.0.0
+
+  # to locate commonly used locations on the filesystem.
   path_provider: ^2.0.11
 
 dev_dependencies:
