@@ -67,6 +67,7 @@ class NewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: articles.length,
+      padding: const EdgeInsets.all(16.0),
       separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 4.0),
         child: Divider(),
@@ -79,43 +80,55 @@ class NewsList extends StatelessWidget {
         var image = article['urlToImage'];
 
         return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
+            SizedBox(
+              width: 100,
+              child: AspectRatio(
+                aspectRatio: 1,
                 child: image != null
-                    ? CachedNetworkImage(imageUrl: image)
+                    ? CachedNetworkImage(
+                        imageUrl: image,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                        errorWidget: (context, url, error) => const Center(
+                          child: Icon(Icons.broken_image_sharp),
+                        ),
+                      )
                     : const Icon(
                         Icons.image,
                         size: 30,
                       ),
               ),
             ),
+            const SizedBox(width: 8.0),
             Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Column(
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      description ?? '',
-                      maxLines: 3,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    description ?? '',
+                    maxLines: 3,
+                  ),
+                ],
               ),
             ),
           ],
