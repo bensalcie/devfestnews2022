@@ -105,7 +105,7 @@ class NewsList extends StatelessWidget {
                         ),
                       )
                     : const Icon(
-                        Icons.image,
+                        Icons.image_not_supported,
                         size: 30,
                       ),
               ),
