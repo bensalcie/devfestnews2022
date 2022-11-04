@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+// A
 import 'package:path_provider/path_provider.dart';
 
 import 'feature/presentation/pages/homepage.dart';
@@ -7,11 +9,11 @@ import 'feature/presentation/pages/homepage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var storage = await HydratedStorage.build(
+  HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
-  HydratedBlocOverrides.runZoned(() => runApp(const MyApp()), storage: storage);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
